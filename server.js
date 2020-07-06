@@ -15,8 +15,6 @@ passport.deserializeUser(function (obj, done) {
 
 const app = express();
 
-app.set('view engine', 'pug');
-
 app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -24,16 +22,13 @@ app.use(cors({credentials: true, origin: 'http://localhost:8080'}));
 
 app.get('/umd/login', passport.authenticate('umd-cas'));
 app.get('/umd/return', passport.authenticate('umd-cas'), (req, res) => {
-    // res.redirect('/')
     res.redirect('http://localhost:8080');
 });
 
 app.get('/', (req, res) => {
     if (req.user) {
-        // res.render('profile', { title: 'Profile', user: req.user })
         res.send(req.user);
     } else {
-        // res.render('login', { title: 'Login' })
         res.send(null);
     }
 });
